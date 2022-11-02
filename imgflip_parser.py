@@ -91,15 +91,6 @@ async def parse():
             tasks.append(task)
         await tqdm_asyncio.gather(*tasks)
         
-    # async with aiohttp.ClientSession() as session:    
-    #     tasks = []
-    #     for data in image_data:
-    #         url = data['url']
-    #         path = data['path']
-    #         task = asyncio.create_task(image_download(session, url, path))
-    #         tasks.append(task)
-    #     await tqdm_asyncio.gather(*tasks)
-        
     return image_data
      
 async def main(create_csv=True):

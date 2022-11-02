@@ -1,7 +1,4 @@
 /raw_images
-/test
-/train
 /__pycache__
-/utils/__pycache__
-/bot/utils/__pycache__
+/bot/__pycache__
 /bot/config.py

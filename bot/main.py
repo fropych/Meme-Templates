@@ -1,21 +1,13 @@
 from io import BytesIO
-from pathlib import Path
 from aiogram import Bot, Dispatcher,executor, types
-from aiogram.types import InputFile, ContentType
-from fastai.vision.learner import load_learner
-from fastai.vision.core import PILImage
-from PIL import Image
-from utils.resize import resize
+from aiogram.types import ContentType
 from config import API_TOKEN
+import requests
+import json
 
 #TODO add logging
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
-
-images_path = Path.cwd()/'raw_images'
-path_to_download = Path.cwd()/'downloaded'
-model_path = Path.cwd()/'models/model.pkl'
-model = load_learner(model_path)
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
@@ -23,19 +15,18 @@ async def send_welcome(message: types.Message):
     
 @dp.message_handler(content_types=ContentType.PHOTO)
 async def send(message: types.Message):
-    print('aaaaaaaaaaaa')
-    if message.caption != '/template': return
+    #if message.caption != '/template': return
     image = BytesIO()
     await message.photo[-1].download(destination_file=image)
+    image.seek(0)
     
-    pilimage = Image.open(image)
-    pilimage = resize(pilimage)
-    image = PILImage.create(pilimage.to_bytes_format())
-    
-    pred, pred_idx, probs = model.predict(image)
+    predict_response = requests.post('http://127.0.0.1:8000/predict/image', files={'file': image})
+    predict_response = json.loads(predict_response.content.decode('utf8'))
+    pred, pred_idx, probs = predict_response['pred'], predict_response['pred_idx'], predict_response['probs']
 
-    template_img = InputFile(images_path/f'{pred}.jpg')
-    await message.reply_photo(template_img, caption=f'{pred}\nProbability: {probs[pred_idx]*100:.3f}%')
+    image_response = requests.get(f'http://127.0.0.1:8000/get/image?label={pred}').content
+
+    await message.reply_photo(BytesIO(image_response), caption=f'{pred}\nProbability: {probs[pred_idx]*100:.3f}%')
     
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
