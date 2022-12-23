@@ -1,4 +1,4 @@
-/raw_images
+/data/raw_images/*.jpg
 /__pycache__
 /bot/__pycache__
-/bot/config.py
+/model/__pycache__
