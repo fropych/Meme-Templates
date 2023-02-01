@@ -1,10 +1,11 @@
+import asyncio
+import json
 from io import BytesIO
+
+import requests
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ContentType
-from config import BOT_TOKEN, API_URL
-import requests
-import json
-import asyncio
+from config import API_URL, BOT_TOKEN
 
 # TODO add logging
 

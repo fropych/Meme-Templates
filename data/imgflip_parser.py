@@ -108,7 +108,7 @@ async def main(create_csv=True):
     if not create_csv:
         return
     df = pd.DataFrame(image_data)
-    df.to_csv(Path.cwd() / "data/raw_images.csv", encoding="utf-8", index=False)
+    df.to_csv("data/raw_images.csv", encoding="utf-8", index=False)
 
 
 if __name__ == "__main__":

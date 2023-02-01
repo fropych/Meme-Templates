@@ -12,7 +12,7 @@ class RandomTextPut:
         width, height = img.size
 
         font_size = int(width * random.uniform(0.03, 0.2))
-        font = ImageFont.truetype("impact.ttf", size=font_size)
+        font = ImageFont.truetype("../impact.ttf", size=font_size)
 
         text_size = random.randint(20*int(1 - 3*font_size/width), int(width/font_size)*5)
         text = ''.join(random.choice(self.alphabet, text_size))

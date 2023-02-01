@@ -1,0 +1,7 @@
+uvicorn
+fastapi
+Pillow
+tqdm
+scikit-learn
+python-multipart
+timm
